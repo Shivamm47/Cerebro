@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerebro Code Red Synchronizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+
+    <!-- BOOT SCREEN -->
+    <div id="boot-screen" class="panel active">
+        <div class="terminal-text" id="boot-text"></div>
+        <button id="btn-enter" class="retro-btn hidden">INITIALIZE LINK</button>
+    </div>
+
+    <!-- ROLE SELECTION -->
+    <div id="role-selection" class="panel hidden">
+        <h1>CEREBRO NODE CONFIGURATION</h1>
+        <p>SELECT OPERATION MODE:</p>
+        <div class="button-group">
+            <button id="btn-broadcaster" class="retro-btn red-glow">[ Become Broadcaster ]</button>
+            <button id="btn-listener" class="retro-btn blue-glow">[ Join as Listener ]</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP SCREEN -->
+    <div id="main-app" class="panel hidden">
+        <header>
+            <h1 class="flicker">CEREBRO BROADCAST CONSOLE</h1>
+            <div class="status-bar">
+                <span id="role-display">ROLE: UNDEFINED</span>
+                <span id="sync-indicator" class="sync-status red">● SYNC LOST</span>
+                <span id="peer-counter">Connected Nodes: 0</span>
+            </div>
+        </header>
+
+        <main class="grid-layout">
+            <!-- VIDEO SIGNAL -->
+            <section class="module video-module">
+                <h2>VIDEO SIGNAL</h2>
+                <div class="video-container">
+                    <video id="sync-video" src="/media/video.mp4" controlsList="nodownload"></video>
+                </div>
+                <!-- BROADCASTER CONTROLS -->
+                <div id="broadcaster-controls" class="controls hidden">
+                    <button id="btn-play" class="control-btn">PLAY</button>
+                    <button id="btn-pause" class="control-btn">PAUSE</button>
+                    <input type="range" id="seek-bar" value="0" min="0" step="0.1">
+                    <span id="time-display">00:00:00 / 00:00:00</span>
+                    <input type="file" id="local-video-upload" accept="video/*" class="file-upload">
+                    <label for="local-video-upload" class="control-btn block-btn">LOAD LOCAL SIGNAL</label>
+                </div>
+                <!-- LISTENER DISPLAY -->
+                <div id="listener-controls" class="controls hidden">
+                    <p class="warning-text">STANDBY. SIGNAL CONTROLLED BY BROADCASTER.</p>
+                    <span id="listener-time-display">00:00:00 / 00:00:00</span>
+                </div>
+            </section>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <!-- SYNC STATUS -->
+                <section class="module sync-module">
+                    <h2>SYNC STATUS</h2>
+                    <ul class="stats-list">
+                        <li>Timecode: <span id="sync-timecode">00:00:00.000</span></li>
+                        <li>Latency: <span id="sync-latency">-- ms</span></li>
+                        <li>Drift: <span id="sync-drift">-- ms</span></li>
+                        <li>Peers: <span id="sync-peers">0 connected</span></li>
+                    </ul>
+                </section>
+
+                <!-- NETWORK DEBUG PANEL -->
+                <section class="module debug-module">
+                    <h2>NETWORK LINK</h2>
+                    <div id="debug-log" class="console-box">
+                        <div class="log-line">> WAITING FOR CONNECTION...</div>
+                    </div>
+                </section>
+
+            </aside>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
